@@ -1,0 +1,57 @@
+- name: Install Kali
+  hosts: localhost
+  become: yes
+  vars_files:
+    - vault.yml
+  vars:
+    ansible_become_pass: "{{ root_pw }}"
+
+  tasks:
+    - name: Install apt keys
+      apt_key:
+        url: "{{ item }}"
+        state: present
+      loop: [
+        "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg",
+        "https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc",
+      ]
+
+    - name: Add repos
+      apt_repository:
+        repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
+        state: present
+      loop: [
+        "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main",
+        "deb https://deb.torproject.org/torproject.org stretch main",
+      ]
+
+    - name: Install tools
+      apt: 
+        name: "{{ item }}" 
+        state: present
+        update_cache: yes
+      loop: [git, codium, tmux, tor]
+
+    - name: Create missing folders
+      file:
+        path: "{{ item }}"
+        owner: kali
+        group: kali
+        mode: "0755"
+        state: directory
+      loop: ["/home/kali/tools", "/home/kali/tools/RubberDucky"]
+
+    - name: Install Rubber Ducky Encoder
+      git:
+        repo: "https://github.com/hak5darren/USB-Rubber-Ducky"
+        dest: /home/kali/tools/RubberDucky
+        clone: yes
+        update: yes
+
+    - name: Set bash_aliases
+      template:
+        src: .bash_aliases.j2
+        dest: /home/kali/.bash_aliases
+        owner: kali
+        group: kali
+        mode: "0644"
