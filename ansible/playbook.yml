@@ -18,7 +18,7 @@
 
     - name: Add repos
       apt_repository:
-        repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main"
+        repo: "{{ item }}"
         state: present
       loop: [
         "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main",
@@ -39,14 +39,18 @@
         group: kali
         mode: "0755"
         state: directory
-      loop: ["/home/kali/tools", "/home/kali/tools/RubberDucky"]
+      loop: ["/home/kali/tools"]
 
     - name: Install Rubber Ducky Encoder
       git:
-        repo: "https://github.com/hak5darren/USB-Rubber-Ducky"
-        dest: /home/kali/tools/RubberDucky
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
         clone: yes
         update: yes
+      loop: [
+        {repo: "https://github.com/hak5darren/USB-Rubber-Ducky", dest: /home/kali/tools/RubberDucky},
+        {repo: "https://github.com/danielmiessler/SecLists", dest: /home/kali/tools/SecLists}
+      ]
 
     - name: Set bash_aliases
       template:
