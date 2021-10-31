@@ -41,7 +41,7 @@
         state: directory
       loop: ["/home/kali/tools"]
 
-    - name: Install Rubber Ducky Encoder
+    - name: Install tools from Github
       git:
         repo: "{{ item.repo }}"
         dest: "{{ item.dest }}"
