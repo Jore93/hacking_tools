@@ -25,12 +25,18 @@
         "deb https://deb.torproject.org/torproject.org stretch main",
       ]
 
-    - name: Install tools
+    - name: Install tools (apt)
       apt: 
         name: "{{ item }}" 
         state: present
         update_cache: yes
-      loop: [git, codium, tmux, tor]
+      loop: [git, codium, tmux, tor, afl, gdb]
+
+    - name: Install tools (gem)
+      gem:
+        name: "{{ item }}"
+        state: latest
+      loop: [zsteg]
 
     - name: Create missing folders
       file:
