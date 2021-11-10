@@ -30,7 +30,7 @@
         name: "{{ item }}" 
         state: present
         update_cache: yes
-      loop: [git, codium, tmux, tor, afl, gdb]
+      loop: [git, codium, tmux, tor, afl, gdb, docker.io, apktool, foremost, exiftool, gobuster]
 
     - name: Install tools (gem)
       gem:
