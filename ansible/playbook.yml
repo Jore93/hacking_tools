@@ -9,6 +9,4 @@
   roles:
     - env-settings
     - dev-tools
-    - role: ext-tools
-      vars:
-        h_tools_base: "/home/kali/hacking_tools"
+    - {role: ext-tools, h_tools_base: "/home/kali/hacking_tools"}

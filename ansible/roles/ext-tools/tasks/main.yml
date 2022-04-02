@@ -1,28 +1,5 @@
 ---
 # tasks file for ext-tools
-- name: Install apt keys
-  apt_key:
-    url: "{{ item }}"
-    state: present
-  loop: [
-    "https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc",
-  ]
-
-- name: Add repos
-  apt_repository:
-    repo: "{{ item }}"
-    state: present
-  loop: [
-    "deb https://deb.torproject.org/torproject.org stretch main",
-  ]
-
-- name: Install tools
-  apt: 
-    name: "{{ item }}" 
-    state: present
-    update_cache: yes
-  loop: [tor]
-
 - name: Create missing folders
   file:
     path: "{{ item }}"
