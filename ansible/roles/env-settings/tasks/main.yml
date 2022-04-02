@@ -1,0 +1,19 @@
+---
+# tasks file for env-settings
+- name: Set bash_aliases
+  template:
+    src: .bash_aliases.j2
+    dest: /home/kali/.bash_aliases
+    owner: kali
+    group: kali
+    mode: "0644"
+
+- name: Check if rockyou.txt.gz exists
+  stat:
+    path: /usr/share/wordlists/rockyou.txt.gz
+  register: rockyou_exists
+
+- name: Decompress rockyou.txt.gz if it exists
+  shell:
+    cmd: gzip -d /usr/share/wordlists/rockyou.txt.gz
+  when: rockyou_exists == true
