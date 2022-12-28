@@ -20,3 +20,15 @@
     {repo: "https://github.com/hak5darren/USB-Rubber-Ducky", dest: RubberDucky},
     {repo: "https://github.com/danielmiessler/SecLists", dest: SecLists}
   ]
+
+- name: Download Volatility 3
+  git:
+    repo: "https://github.com/volatilityfoundation/volatility3"
+    dest: "{{ h_tools_base }}/volatility3"
+    clone: yes
+    update: yes
+    force: yes
+#  environment:
+#    PATH: "$PATH:{{ h_tools_base }}/volatility3"
+  tags: memory_forensics
+
